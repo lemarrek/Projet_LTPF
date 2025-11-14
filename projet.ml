@@ -15,5 +15,22 @@ type prog =
 
 
 (*Exercice 1.1.2 *)
+ 
+(*
+  Grammaire :
 
+  Var ::= 'a' | 'b' | 'c' | 'd'
+  Cst ::= 0 | 1
+  Expr ::= Cst | Var
+  Instr ::= Skip | Assign | Seq | If | While
+  Assign ::= Var ':' '=' Expr
+  Seq ::= Instr ';' Instr 
+  If ::= 'i' '(' Var ')' '{' Prog '}' '{' Prog '}'
+  While ::= 'w' '(' Var ')' '{' Prog '}'
+  Prog ::= Instr
+
+
+*)
+
+(*Exercice 1.1.3 *)
 
