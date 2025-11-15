@@ -17,7 +17,7 @@ type instr =
 (*Exercice 1.1.2 *)
  
 (*
-  Grammaire :
+  Grammaire pour le langage WHILEb⁻⁻:
 
   Var ::= 'a' | 'b' | 'c' | 'd'
   Cst ::= 0 | 1
@@ -29,7 +29,7 @@ type instr =
   While ::= 'w' '(' Var ')' '{' Prog '}'
   Prog ::= Prog ';' Instr | Instr
 
-  
+
   (*==> Notre grammaire est récursive a gauche : 
         Un programme (qui est une suite d'instruction) peut se répeter 
         à l'infini). 
@@ -52,6 +52,31 @@ type instr =
   Prog ::= Instr InstrSuite 
 
 *)
+
+
+(*Exercice 1.1.4*)
+
+(*  Grammaire pour le langage WHILLEb
+
+    Avec la grammaire fournie, nous avons de la récursivité gauche
+    - Pour le NT E ->  E ::= E '+' T | T
+    - Pour le NT T -> T ::= T '.' F | F
+    - Pour le NT F -> F ::= '!' F | A | '(' E ')'
+
+    Une grammaire non récursive à gauche peut s'écrire :
+
+    C ::= '0' | '1'
+    V ::= 'a' |'b' | 'c' | 'd'
+    A ::= C | V
+    F ::= '!' F | A | '(' E ')'
+
+    E ::= T SE
+    SE ::= '+' T SE | epsilon
+
+    T ::= F ST
+    ST ::= '.' F ST | epsilon 
+*)
+
 
 
 
