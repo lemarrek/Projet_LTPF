@@ -43,7 +43,7 @@ Une première Grammaire (récursive à gauche indirecte) :
   * **Cst** ::= 0 | 1<br>
   * **Expr** ::= Cst | Var<br>
   * **Instr** ::=  Assign | If | While<br>
-  * **InstrSuite** ::= ';' Instr InstrSuite | epsilon<br>
+  * **InstrSuite** ::= ';' Instr InstrSuite | ε<br>
   * **Assign** ::= Var ':' '=' Expr<br>
   * **If** ::= 'i' '(' Var ')' '{' Prog '}' '{' Prog '}'<br>
   * **While** ::= 'w' '(' Var ')' '{' Prog '}'<br>

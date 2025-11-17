@@ -39,10 +39,10 @@ type prog =
   Var ::= 'a' | 'b' | 'c' | 'd'
   Cst ::= 0 | 1
   Expr ::= Cst | Var
-  Instr ::= Assign InstrSuite | If | While
+  Instr ::= Assign | If | While
   InstrSuite ::= ';' Instr InstrSuite | ε
   Assign ::= Var ':' '=' Expr
   If ::= 'i' '(' Var ')' '{' Prog '}' '{' Prog '}'
   While ::= 'w' '(' Var ')' '{' Prog '}'
-  Prog ::= Instr
+  Prog ::= Instr InstrSuite
 *)
