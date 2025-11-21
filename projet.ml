@@ -1,15 +1,16 @@
+#use "anacomb.ml";;
 (* Exercice 1.1.1 *)
 
 type var = A | B | C | D
 type expr =
   | EConst of int          (* 0 ou 1 *)
   | EVar of var            (* variables a, b, c, d *)
-type prog =
+type instr =
   | Skip
   | Assign of var * expr
-  | Seq of prog * prog
-  | If of var * prog * prog
-  | While of var * prog
+  | Seq of instr * instr
+  | If of var * instr * instr
+  | While of var * instr
 
 (* Exercice 1.1.2 *)
 
@@ -44,7 +45,97 @@ type prog =
   Assign ::= Var ':' '=' Expr
   If ::= 'i' '(' Var ')' '{' Prog '}' '{' Prog '}'
   While ::= 'w' '(' Var ')' '{' Prog '}'
-  Prog ::= Instr InstrSuite
+  Prog ::= Instr InstrSuite | ε
+*)  
+
+(* Exercice 1.2.1 *)
+
+(*
+Notations :
+   - s          : état initial
+   - s'         : état final
+   - [[expr]]_s : valeur de l'expression 'expr' évaluée dans l'état 's'
+   - s -P-> s'  : l'exécution du programme P à partir de s conduit à s'
+
+Règle 1 : Cas VRAI (Condition = 1)
+
+        [[expr]]_s = 1       s --P--> s'
+      ---------------------------------------
+        s --if expr then P else Q--> s'
+
+
+Règle 2 : Cas FAUX (Condition = 0).
+
+        [[expr]]_s = 0       s --Q--> s'
+      ---------------------------------------
+        s --if expr then P else Q--> s'
 *)
+
+(* 2 Partie principale *)
+
+let prVar = terminal_res(function
+  |'a' -> Some A
+  |'b' -> Some B
+  |'c' -> Some C
+  |'d' -> Some D
+  |_ -> None
+);;
+
+let prCst = terminal_res(function
+  |'0' -> Some 0
+  |'1' -> Some 1
+  |_ -> None
+);;
+
+let prExpr =
+  (prCst ++> fun c -> epsilon_res (EConst c))
+  +|
+  (prVar ++> fun v -> epsilon_res (EVar v))
+;;
+
+let rec prProg l = (
+  (prInstr ++> fun i ->
+    prInstrSuite ++> fun s ->
+      epsilon_res(Seq(i,s)))
++|
+  (epsilon_res Skip)
+) l
+
+and prInstr l = (
+  prAssign 
+  +|
+  prIf
+  +|
+  prWhile
+) l
+
+and prInstrSuite l = (
+  (terminal ';' -+> prInstr ++> fun i ->
+    prInstrSuite ++> fun s ->
+      epsilon_res(Seq(i, s)))
+  +|
+  (epsilon_res Skip)
+) l
+
+and prAssign l = (
+  prVar ++> fun v ->
+    terminal ':' --> terminal '=' -+> prExpr ++> fun e ->
+      epsilon_res(Assign(v,e))
+) l
+
+and prIf l = (
+  terminal 'i' --> terminal '(' -+> prVar ++> fun v ->
+    terminal ')' --> terminal '{' -+> prProg ++> fun p1 ->
+      terminal '}' --> terminal '{' -+> prProg ++> fun p2 ->
+        terminal '}' -+> epsilon_res (If(v, p1, p2))
+) l
+
+and prWhile l = (
+  terminal 'w' --> terminal '(' -+> prVar ++> fun v ->
+    terminal ')' --> terminal '{' -+> prProg ++> fun p ->
+      terminal '}' -+> epsilon_res (While(v, p))
+) l;;
+
+
 
 
