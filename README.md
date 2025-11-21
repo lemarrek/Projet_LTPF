@@ -70,16 +70,6 @@ Une première Grammaire (récursive à gauche indirecte) :
 
 ### 1.2 Sémantique Naturelle (SN)
 
-#### 1.2.1 Règles SN pour If 
-
-| If true  | If false  |
-|----------|-----------|
-| ![alt text](SN_If_true.png) | ![alt text](SN_If_false.png) |
-
--> Cette sémantique naturelle du If évalue l'expression depuis l'état initial s1. 
-- **true** : à partir de l'état s1, on aboutit à l'état final s2 en exécutant P.
-- **false** : à partir de l'état s1, on aboutit à l'état final s2 en exécutant Q'.
-
---- 
+#### 1.2.1 Règles SN pour If
 
 ## 2 - Partie Principale
